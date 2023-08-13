@@ -26,9 +26,9 @@ load("@rules_dotnet//dotnet:paket2bazel_dependencies.bzl", "paket2bazel_dependen
 
 paket2bazel_dependencies()
 
-load("//:deps.bzl", "deps")
+load("//:sharp_boost_voronoi_deps.bzl", "sharp_boost_voronoi_deps")
 
-deps()
+sharp_boost_voronoi_deps()
 
 # Misc deps
 

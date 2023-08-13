@@ -1,6 +1,6 @@
 storage: none
 
-group deps
+group sharp_boost_voronoi_deps
     framework: net6.0
     source https://api.nuget.org/v3/index.json
 

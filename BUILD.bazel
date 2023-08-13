@@ -4,7 +4,7 @@ csharp_library(
     name = "sharp_boost_voronoi",
     srcs = ["VoronoiWrapper.cs"],
     private_deps = [
-        "@deps//microsoft.netcore.app.ref",
+        "@sharp_boost_voronoi_deps//microsoft.netcore.app.ref",
     ],
     data = [
         "//boost_voronoi:boost_voronoi",
@@ -20,12 +20,12 @@ csharp_nunit_test(
     srcs = glob(["VoronoiWrapperTests.cs"]),
     strict_deps = True,
     private_deps = [
-        "@deps//microsoft.netcore.app.ref",
+        "@sharp_boost_voronoi_deps//microsoft.netcore.app.ref",
     ],
     target_frameworks = ["net6.0"],
     deps = [
         ":sharp_boost_voronoi",
-        "@deps//nunit",
+        "@sharp_boost_voronoi_deps//nunit",
     ],
     visibility = ["//visibility:public"],
 )

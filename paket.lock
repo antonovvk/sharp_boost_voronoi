@@ -1,6 +1,6 @@
 STORAGE: NONE
 
-GROUP deps
+GROUP sharp_boost_voronoi_deps
 RESTRICTION: == net6.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
