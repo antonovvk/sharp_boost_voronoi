@@ -1,0 +1,31 @@
+load("@rules_dotnet//dotnet:defs.bzl", "csharp_library", "csharp_nunit_test")
+
+csharp_library(
+    name = "sharp_boost_voronoi",
+    srcs = ["VoronoiWrapper.cs"],
+    private_deps = [
+        "@deps//microsoft.netcore.app.ref",
+    ],
+    data = [
+        "//boost_voronoi:boost_voronoi",
+    ],
+    allow_unsafe_blocks = True,
+    target_frameworks = ["net6.0"],
+    deps = [],
+    visibility = ["//visibility:public"],
+)
+
+csharp_nunit_test(
+    name = "sharp_boost_voronoi_tests",
+    srcs = glob(["VoronoiWrapperTests.cs"]),
+    strict_deps = True,
+    private_deps = [
+        "@deps//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
+    deps = [
+        ":sharp_boost_voronoi",
+        "@deps//nunit",
+    ],
+    visibility = ["//visibility:public"],
+)

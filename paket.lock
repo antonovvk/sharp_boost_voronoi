@@ -1,0 +1,12 @@
+STORAGE: NONE
+
+GROUP deps
+RESTRICTION: == net6.0
+NUGET
+  remote: https://api.nuget.org/v3/index.json
+    Microsoft.NETCore.App.Ref (6.0.20)
+    Microsoft.NETCore.Platforms (7.0.4)
+    NETStandard.Library (2.0.3)
+      Microsoft.NETCore.Platforms (>= 1.1)
+    NUnit (3.12)
+      NETStandard.Library (>= 2.0)
