@@ -8,7 +8,6 @@ cc_library(
         "boost_voronoi.h",
     ],
     copts = [
-        "-std=c++17",
         "-Wall",
     ],
     deps = [

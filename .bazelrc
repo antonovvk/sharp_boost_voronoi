@@ -1,3 +1,9 @@
+common --enable_bzlmod
+common --registry=https://raw.githubusercontent.com/antonovvk/bazel-central-registry/rules_boost/
+
+build --cxxopt='-std=c++17'
+test --cxxopt='-std=c++17'
+
 build --experimental_cc_shared_library
 test --experimental_cc_shared_library
 test --genrule_strategy=standalone
