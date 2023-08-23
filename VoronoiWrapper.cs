@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using Bazel;
 
 [StructLayout(LayoutKind.Sequential)]
 public struct boost_voronoi_vertex_t {
@@ -33,7 +35,7 @@ public unsafe class VoronoiWrapper : IDisposable {
 
     public VoronoiWrapper ()
     {
-        _ptr = boost_voronoi_create();
+        _ptr = Interop.boost_voronoi_create();
     }
 
     public void Dispose()
@@ -49,72 +51,72 @@ public unsafe class VoronoiWrapper : IDisposable {
             return;
 
         // Free any unmanaged objects here.
-        boost_voronoi_delete(_ptr);
+        Interop.boost_voronoi_delete(_ptr);
 
         Disposed = true;
     }
 
     public void AddPoint(Int32 x, Int32 y)
     {
-        boost_voronoi_add_point(_ptr, x, y);
+        Interop.boost_voronoi_add_point(_ptr, x, y);
     }
 
     public void AddSegment(Int32 x1, Int32 y1, Int32 x2, Int32 y2)
     {
-        boost_voronoi_add_segment(_ptr, x1, y1, x2, y2);
+        Interop.boost_voronoi_add_segment(_ptr, x1, y1, x2, y2);
     }
 
     public void Construct()
     {
-        boost_voronoi_construct(_ptr);
+        Interop.boost_voronoi_construct(_ptr);
     }
 
     public void Clear()
     {
-        boost_voronoi_clear(_ptr);
+        Interop.boost_voronoi_clear(_ptr);
     }
 
     public long CountVertices()
     {
-        return boost_voronoi_count_vertices(_ptr);
+        return Interop.boost_voronoi_count_vertices(_ptr);
     }
 
     public long CountEdges()
     {
-        return boost_voronoi_count_edges(_ptr);
+        return Interop.boost_voronoi_count_edges(_ptr);
     }
 
     public long CountCells()
     {
-        return boost_voronoi_count_cells(_ptr);
+        return Interop.boost_voronoi_count_cells(_ptr);
     }
 
     public void CreateVertexMap()
     {
-        boost_voronoi_create_vertex_map(_ptr);
+        Interop.boost_voronoi_create_vertex_map(_ptr);
     }
 
     public void CreateEdgeMap()
     {
-        boost_voronoi_create_edge_map(_ptr);
+        Interop.boost_voronoi_create_edge_map(_ptr);
     }
 
     public void CreateCellMap()
     {
-        boost_voronoi_create_cell_map(_ptr);
+        Interop.boost_voronoi_create_cell_map(_ptr);
     }
 
     public Tuple<long, double, double> GetVertex(Int64 index)
     {
-        var v = boost_voronoi_get_vertex(_ptr, index);
+        var v = Interop.boost_voronoi_get_vertex(_ptr, index);
         var t = new Tuple<long, double, double>(v->index, v->x, v->y);
-        boost_voronoi_delete_vertex(v);
+        Interop.boost_voronoi_delete_vertex(v);
         return t;
     }
 
     public Tuple<long, long, long, bool, bool, bool, Tuple<long, long>> GetEdge(Int64 index)
     {
-        var e = boost_voronoi_get_edge(_ptr, index);
+        var e = Interop.boost_voronoi_get_edge(_ptr, index);
         var t = new Tuple<long, long, long, bool, bool, bool, Tuple<long, long>>(
             e->index,
             e->start_id,
@@ -124,13 +126,13 @@ public unsafe class VoronoiWrapper : IDisposable {
             e->is_finite == 1,
             new Tuple<long, long>(e->twin_index, e->cell_index)
         );
-        boost_voronoi_delete_edge(e);
+        Interop.boost_voronoi_delete_edge(e);
         return t;
     }
 
     public Tuple<long, long, short, Tuple<bool, bool, bool, bool>, List<long>, List<long>> GetCell(Int64 index)
     {
-        var c = boost_voronoi_get_cell(_ptr, index);
+        var c = Interop.boost_voronoi_get_cell(_ptr, index);
         var t = new Tuple<long, long, short, Tuple<bool, bool, bool, bool>, List<long>, List<long>>(
             c->index,
             c->source_index,
@@ -152,61 +154,86 @@ public unsafe class VoronoiWrapper : IDisposable {
         {
             t.Item6.Add(c->vertex_identifiers[i]);
         }
-        boost_voronoi_delete_cell(c);
+        Interop.boost_voronoi_delete_cell(c);
         return t;
     }
 
-    [DllImport(@"boost_voronoi", EntryPoint = "boost_voronoi_create")]
-    extern unsafe static void* boost_voronoi_create();
+    static class Interop {
+        const string BoostVoronoi = "boost_voronoi";
 
-    [DllImport(@"boost_voronoi")]
-    extern unsafe static void boost_voronoi_delete(void* ptr);
+        static Interop ()
+        {
+            NativeLibrary.SetDllImportResolver(typeof(Interop).Assembly, ImportResolver);
+        }
 
-    [DllImport(@"boost_voronoi")]
-    extern unsafe static void boost_voronoi_add_point(void* ptr, int x, int y);
+        private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
+        {
+            IntPtr libHandle = IntPtr.Zero;
+            if (libraryName == BoostVoronoi)
+            {
+                var manifestPath = Runfiles.Create().Rlocation("MANIFEST");
+                var runfiles = Runfiles.Create("", new Dictionary<string, string>{
+                    {"RUNFILES_MANIFEST_ONLY", "1"},
+                    {"RUNFILES_MANIFEST_FILE", manifestPath},
+                });
+                var path = runfiles.Rlocation("_main/boost_voronoi/libboost_voronoi.so");
+                NativeLibrary.TryLoad(path, assembly, DllImportSearchPath.System32, out libHandle);
+            }
+            return libHandle;
+        }
 
-    [DllImport(@"boost_voronoi")]
-    extern unsafe static void boost_voronoi_add_segment(void* ptr, int x1, int y1, int x2, int y2);
+        [DllImport(BoostVoronoi, EntryPoint = "boost_voronoi_create")]
+        public extern unsafe static void* boost_voronoi_create();
 
-    [DllImport(@"boost_voronoi")]
-    extern unsafe static void boost_voronoi_construct(void* ptr);
+        [DllImport(BoostVoronoi)]
+        public extern unsafe static void boost_voronoi_delete(void* ptr);
 
-    [DllImport(@"boost_voronoi")]
-    extern unsafe static void boost_voronoi_clear(void* ptr);
+        [DllImport(BoostVoronoi)]
+        public extern unsafe static void boost_voronoi_add_point(void* ptr, int x, int y);
 
-    [DllImport(@"boost_voronoi")]
-    extern unsafe static long boost_voronoi_count_vertices(void* ptr);
+        [DllImport(BoostVoronoi)]
+        public extern unsafe static void boost_voronoi_add_segment(void* ptr, int x1, int y1, int x2, int y2);
 
-    [DllImport(@"boost_voronoi")]
-    extern unsafe static long boost_voronoi_count_edges(void* ptr);
+        [DllImport(BoostVoronoi)]
+        public extern unsafe static void boost_voronoi_construct(void* ptr);
 
-    [DllImport(@"boost_voronoi")]
-    extern unsafe static long boost_voronoi_count_cells(void* ptr);
+        [DllImport(BoostVoronoi)]
+        public extern unsafe static void boost_voronoi_clear(void* ptr);
 
-    [DllImport(@"boost_voronoi")]
-    extern unsafe static void boost_voronoi_create_vertex_map(void* ptr);
+        [DllImport(BoostVoronoi)]
+        public extern unsafe static long boost_voronoi_count_vertices(void* ptr);
 
-    [DllImport(@"boost_voronoi")]
-    extern unsafe static void boost_voronoi_create_edge_map(void* ptr);
+        [DllImport(BoostVoronoi)]
+        public extern unsafe static long boost_voronoi_count_edges(void* ptr);
 
-    [DllImport(@"boost_voronoi")]
-    extern unsafe static void boost_voronoi_create_cell_map(void* ptr);
+        [DllImport(BoostVoronoi)]
+        public extern unsafe static long boost_voronoi_count_cells(void* ptr);
 
-    [DllImport(@"boost_voronoi")]
-    extern unsafe static boost_voronoi_vertex_t* boost_voronoi_get_vertex(void* ptr, Int64 i);
+        [DllImport(BoostVoronoi)]
+        public extern unsafe static void boost_voronoi_create_vertex_map(void* ptr);
 
-    [DllImport(@"boost_voronoi")]
-    extern unsafe static void boost_voronoi_delete_vertex(boost_voronoi_vertex_t* v);
+        [DllImport(BoostVoronoi)]
+        public extern unsafe static void boost_voronoi_create_edge_map(void* ptr);
 
-    [DllImport(@"boost_voronoi")]
-    extern unsafe static boost_voronoi_edge_t* boost_voronoi_get_edge(void* ptr, Int64 i);
+        [DllImport(BoostVoronoi)]
+        public extern unsafe static void boost_voronoi_create_cell_map(void* ptr);
 
-    [DllImport(@"boost_voronoi")]
-    extern unsafe static void boost_voronoi_delete_edge(boost_voronoi_edge_t* e);
+        [DllImport(BoostVoronoi)]
+        public extern unsafe static boost_voronoi_vertex_t* boost_voronoi_get_vertex(void* ptr, Int64 i);
 
-    [DllImport(@"boost_voronoi")]
-    extern unsafe static boost_voronoi_cell_t* boost_voronoi_get_cell(void* ptr, Int64 i);
+        [DllImport(BoostVoronoi)]
+        public extern unsafe static void boost_voronoi_delete_vertex(boost_voronoi_vertex_t* v);
 
-    [DllImport(@"boost_voronoi")]
-    extern unsafe static void boost_voronoi_delete_cell(boost_voronoi_cell_t* c);
-}
+        [DllImport(BoostVoronoi)]
+        public extern unsafe static boost_voronoi_edge_t* boost_voronoi_get_edge(void* ptr, Int64 i);
+
+        [DllImport(BoostVoronoi)]
+        public extern unsafe static void boost_voronoi_delete_edge(boost_voronoi_edge_t* e);
+
+        [DllImport(BoostVoronoi)]
+        public extern unsafe static boost_voronoi_cell_t* boost_voronoi_get_cell(void* ptr, Int64 i);
+
+        [DllImport(BoostVoronoi)]
+        public extern unsafe static void boost_voronoi_delete_cell(boost_voronoi_cell_t* c);
+    };
+};
