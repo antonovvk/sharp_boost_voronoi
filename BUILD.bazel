@@ -1,17 +1,9 @@
 load("@rules_dotnet//dotnet:defs.bzl", "csharp_library", "csharp_nunit_test")
-load("import.bzl", "import_native_so")
-
-import_native_so(
-    name = "boost_voronoi_so",
-    src = "//boost_voronoi:boost_voronoi",
-    version = "0.0.0",
-    internals_visible_to = ["sharp_boost_voronoi"],
-)
 
 csharp_library(
     name = "sharp_boost_voronoi",
     srcs = ["VoronoiWrapper.cs"],
-    data = [":boost_voronoi_so"],
+    data = ["//boost_voronoi"],
     deps = ["@rules_dotnet//tools/runfiles"],
     allow_unsafe_blocks = True,
     target_frameworks = ["net6.0"],
@@ -26,7 +18,6 @@ csharp_nunit_test(
     srcs = ["VoronoiWrapperTests.cs"],
     deps = [
         ":sharp_boost_voronoi",
-        ":boost_voronoi_so",
         "@paket.sharp_boost_voronoi_deps//nunit",
     ],
     strict_deps = True,
