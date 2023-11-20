@@ -20,7 +20,7 @@ register_toolchains("@dotnet_toolchains//:all")
 paket2bazel_dependencies_extension = use_extension("@rules_dotnet//dotnet:paket.paket2bazel_dependencies_extension.bzl", "paket2bazel_dependencies_extension")
 use_repo(paket2bazel_dependencies_extension, "paket.paket2bazel_dependencies")
 
-sharp_boost_voronoi_deps_extension = use_extension("@//:paket.sharp_boost_voronoi_deps_extension.bzl", "sharp_boost_voronoi_deps_extension")
+sharp_boost_voronoi_deps_extension = use_extension("//:paket.sharp_boost_voronoi_deps_extension.bzl", "sharp_boost_voronoi_deps_extension")
 use_repo(sharp_boost_voronoi_deps_extension, "paket.sharp_boost_voronoi_deps")
 
 bazel_dep(name = "aspect_bazel_lib", version = "1.34.5")
