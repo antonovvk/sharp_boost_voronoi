@@ -1,31 +1,38 @@
 load("@rules_dotnet//dotnet:defs.bzl", "csharp_library", "csharp_nunit_test")
+load("import.bzl", "import_native_so")
+
+import_native_so(
+    name = "boost_voronoi_so",
+    src = "//boost_voronoi:boost_voronoi",
+    version = "0.0.0",
+    internals_visible_to = ["sharp_boost_voronoi"],
+)
 
 csharp_library(
     name = "sharp_boost_voronoi",
     srcs = ["VoronoiWrapper.cs"],
-    private_deps = [
-        "@sharp_boost_voronoi_deps//microsoft.netcore.app.ref",
-    ],
-    data = [
-        "//boost_voronoi:boost_voronoi",
-    ],
+    data = [":boost_voronoi_so"],
+    deps = ["@rules_dotnet//tools/runfiles"],
     allow_unsafe_blocks = True,
     target_frameworks = ["net6.0"],
-    deps = [],
+    targeting_packs = [
+        "@paket.sharp_boost_voronoi_deps//microsoft.netcore.app.ref",
+    ],
     visibility = ["//visibility:public"],
 )
 
 csharp_nunit_test(
     name = "sharp_boost_voronoi_tests",
-    srcs = glob(["VoronoiWrapperTests.cs"]),
-    strict_deps = True,
-    private_deps = [
-        "@sharp_boost_voronoi_deps//microsoft.netcore.app.ref",
-    ],
-    target_frameworks = ["net6.0"],
+    srcs = ["VoronoiWrapperTests.cs"],
     deps = [
         ":sharp_boost_voronoi",
-        "@sharp_boost_voronoi_deps//nunit",
+        ":boost_voronoi_so",
+        "@paket.sharp_boost_voronoi_deps//nunit",
+    ],
+    strict_deps = True,
+    target_frameworks = ["net6.0"],
+    targeting_packs = [
+        "@paket.sharp_boost_voronoi_deps//microsoft.netcore.app.ref",
     ],
     visibility = ["//visibility:public"],
 )
