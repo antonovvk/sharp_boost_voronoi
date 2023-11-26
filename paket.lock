@@ -4,9 +4,9 @@ GROUP sharp_boost_voronoi_deps
 RESTRICTION: == net6.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    Microsoft.NETCore.App.Ref (6.0.20)
+    Microsoft.NETCore.App.Ref (6.0.25)
     Microsoft.NETCore.Platforms (7.0.4)
     NETStandard.Library (2.0.3)
       Microsoft.NETCore.Platforms (>= 1.1)
-    NUnit (3.12)
+    NUnit (3.13.2)
       NETStandard.Library (>= 2.0)

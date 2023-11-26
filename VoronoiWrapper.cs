@@ -171,12 +171,8 @@ public unsafe class VoronoiWrapper : IDisposable {
             IntPtr libHandle = IntPtr.Zero;
             if (libraryName == BoostVoronoi)
             {
-                var manifestPath = Runfiles.Create().Rlocation("MANIFEST");
-                var runfiles = Runfiles.Create("", new Dictionary<string, string>{
-                    {"RUNFILES_MANIFEST_ONLY", "1"},
-                    {"RUNFILES_MANIFEST_FILE", manifestPath},
-                });
-                var path = runfiles.Rlocation("_main/boost_voronoi/libboost_voronoi.so");
+                var runfiles = Runfiles.Create();
+                var path = runfiles.Rlocation("sharp_boost_voronoi/boost_voronoi/libboost_voronoi.so");
                 NativeLibrary.TryLoad(path, assembly, DllImportSearchPath.System32, out libHandle);
             }
             return libHandle;
