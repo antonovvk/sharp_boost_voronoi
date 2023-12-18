@@ -1,3 +1,13 @@
+load("@rules_foreign_cc//foreign_cc:boost_build.bzl", "boost_build")
+
+boost_build(
+    name = "boost_headers",
+    lib_source = "@boost//:all",
+    out_headers_only = True,
+    user_options = ["--with-headers"],
+    visibility = ["//visibility:public"],
+)
+
 cc_library(
     name = "boost_voronoi_wrap",
     srcs = [
@@ -11,8 +21,7 @@ cc_library(
         "-Wall",
     ],
     deps = [
-        "@boost//:polygon",
-        "@boost//:bimap",
+        ":boost_headers",
     ],
     visibility = ["//visibility:public"],
 )

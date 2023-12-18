@@ -1,5 +1,6 @@
 common --enable_bzlmod
-common --registry=https://raw.githubusercontent.com/antonovvk/bazel-central-registry/rules_boost/
+#common --registry=file:///work/bazel-central-registry
+common --registry=https://raw.githubusercontent.com/antonovvk/bazel-central-registry/sharp_boost_voronoi/
 
 build --cxxopt='-std=c++17'
 test --cxxopt='-std=c++17'
