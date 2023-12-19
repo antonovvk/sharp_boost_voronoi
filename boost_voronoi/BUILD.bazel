@@ -5,6 +5,10 @@ boost_build(
     lib_source = "@boost//:all",
     out_headers_only = True,
     user_options = ["--with-headers"],
+    bootstrap_script = select({
+        "@platforms//os:windows": "bootstrap.bat",
+        "//conditions:default": "bootstrap.sh",
+    }),
     visibility = ["//visibility:public"],
 )
 

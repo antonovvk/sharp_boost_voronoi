@@ -1,10 +1,10 @@
 module(
     name = "sharp_boost_voronoi",
-    version = "0.0.3",
+    version = "0.0.4",
 )
 
 bazel_dep(name = "googletest", version = "1.14.0", repo_name = "com_github_google_googletest")
-bazel_dep(name = "rules_foreign_cc", version = "0.9.0")
+bazel_dep(name = "rules_foreign_cc", version = "0.10.1-winboost")
 
 non_module_dependencies = use_extension("//:extensions.bzl", "non_module_dependencies")
 use_repo(non_module_dependencies, "boost")
