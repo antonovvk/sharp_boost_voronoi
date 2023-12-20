@@ -4,6 +4,10 @@ boost_build(
     name = "boost_headers",
     lib_source = "@boost//:all",
     out_headers_only = True,
+    out_include_dir = select({
+        "@platforms//os:windows": "include/boost-1_83",
+        "//conditions:default": "include",
+    }),
     user_options = ["--with-headers"],
     bootstrap_script = select({
         "@platforms//os:windows": "bootstrap.bat",
