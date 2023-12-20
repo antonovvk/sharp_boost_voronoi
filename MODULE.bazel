@@ -1,10 +1,17 @@
 module(
     name = "sharp_boost_voronoi",
-    version = "0.0.7",
+    version = "0.0.8",
 )
 
 bazel_dep(name = "googletest", version = "1.14.0", repo_name = "com_github_google_googletest")
 bazel_dep(name = "rules_foreign_cc", version = "0.10.1-winboost2")
+
+clang_ext = use_extension("//:local_config_clang_extension.bzl", "clang_extension")
+use_repo(clang_ext, "local_config_clang")
+
+register_execution_platforms(
+    "@local_config_clang//:clang-cl",
+)
 
 non_module_dependencies = use_extension("//:extensions.bzl", "non_module_dependencies")
 use_repo(non_module_dependencies, "boost")
@@ -26,17 +33,3 @@ use_repo(sharp_boost_voronoi_deps_extension, "paket.sharp_boost_voronoi_deps")
 bazel_dep(name = "aspect_bazel_lib", version = "1.34.5")
 bazel_dep(name = "bazel_skylib", version = "1.4.2")
 bazel_dep(name = "platforms", version = "0.0.7")
-
-cc_configure = use_extension("@bazel_tools//tools/cpp:cc_configure.bzl", "cc_configure_extension")
-use_repo(cc_configure, "local_config_cc")
-
-win_clang_ext = use_extension("//:local_config_win_clang_extension.bzl", "win_clang_extension")
-use_repo(win_clang_ext, "local_config_win_clang")
-
-register_execution_platforms(
-    "@local_config_win_clang//:x64_windows-clang-cl"
-)
-
-register_toolchains(
-    "@local_config_cc//:cc-toolchain-x64_windows-clang-cl",
-)
