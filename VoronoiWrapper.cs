@@ -171,8 +171,11 @@ public unsafe class VoronoiWrapper : IDisposable {
             IntPtr libHandle = IntPtr.Zero;
             if (libraryName == BoostVoronoi)
             {
+                var ext = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ".dll" :
+                    RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? ".dylib" :
+                    ".so";
                 var runfiles = Runfiles.Create();
-                var path = runfiles.Rlocation("sharp_boost_voronoi/boost_voronoi/libboost_voronoi.so");
+                var path = runfiles.Rlocation("sharp_boost_voronoi/boost_voronoi/libboost_voronoi" + ext);
                 NativeLibrary.TryLoad(path, assembly, DllImportSearchPath.System32, out libHandle);
             }
             return libHandle;
