@@ -1,4 +1,6 @@
 common --enable_bzlmod
+common --genrule_strategy=standalone
+common --spawn_strategy=standalone
 #common --registry=file:///work/bazel-central-registry
 common --registry=https://raw.githubusercontent.com/antonovvk/bazel-central-registry/sharp_boost_voronoi/
 

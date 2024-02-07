@@ -1,6 +1,6 @@
 module(
     name = "sharp_boost_voronoi",
-    version = "0.0.8",
+    version = "0.0.10",
 )
 
 bazel_dep(name = "googletest", version = "1.14.0", repo_name = "com_github_google_googletest")
@@ -16,7 +16,7 @@ register_execution_platforms(
 non_module_dependencies = use_extension("//:extensions.bzl", "non_module_dependencies")
 use_repo(non_module_dependencies, "boost")
 
-bazel_dep(name = "rules_dotnet", version = "0.0.2")
+bazel_dep(name = "rules_dotnet", version = "0.0.4")
 
 dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
 dotnet.toolchain(dotnet_version = "8.0.100")

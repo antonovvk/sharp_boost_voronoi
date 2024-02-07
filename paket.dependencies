@@ -1,8 +1,8 @@
 storage: none
 
 group sharp_boost_voronoi_deps
-    framework: net6.0
+    framework: net8.0
     source https://api.nuget.org/v3/index.json
 
-    nuget Microsoft.NETCore.App.Ref 6.0.25
+    nuget Microsoft.NETCore.App.Ref 8.0.0
     nuget NUnit 3.13.2

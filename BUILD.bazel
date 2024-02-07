@@ -6,7 +6,7 @@ csharp_library(
     data = ["//boost_voronoi"],
     deps = ["@rules_dotnet//tools/runfiles"],
     allow_unsafe_blocks = True,
-    target_frameworks = ["net6.0"],
+    target_frameworks = ["net8.0"],
     targeting_packs = [
         "@paket.sharp_boost_voronoi_deps//microsoft.netcore.app.ref",
     ],
@@ -21,7 +21,7 @@ csharp_nunit_test(
         "@paket.sharp_boost_voronoi_deps//nunit",
     ],
     strict_deps = True,
-    target_frameworks = ["net6.0"],
+    target_frameworks = ["net8.0"],
     targeting_packs = [
         "@paket.sharp_boost_voronoi_deps//microsoft.netcore.app.ref",
     ],
