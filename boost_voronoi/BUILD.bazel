@@ -9,10 +9,6 @@ boost_build(
         "//conditions:default": "include",
     }),
     user_options = ["--with-headers"],
-    bootstrap_script = select({
-        "@platforms//os:windows": "bootstrap.bat",
-        "//conditions:default": "bootstrap.sh",
-    }),
     visibility = ["//visibility:public"],
 )
 
