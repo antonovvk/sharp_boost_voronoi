@@ -1,8 +1,11 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Bazel;
+
+namespace SharpBoostVoronoi;
 
 [StructLayout(LayoutKind.Sequential)]
 public struct boost_voronoi_vertex_t {
@@ -174,8 +177,13 @@ public unsafe class VoronoiWrapper : IDisposable {
                 var ext = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ".dll" :
                     RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? ".dylib" :
                     ".so";
-                var runfiles = Runfiles.Create();
-                var path = runfiles.Rlocation("sharp_boost_voronoi/boost_voronoi/libboost_voronoi" + ext);
+
+                var path = Path.Combine(System.IO.Path.GetDirectoryName(assembly.Location), $"libboost_voronoi{ext}");
+                if (Environment.GetEnvironmentVariable("RUNFILES_DIR") is not null)
+                {
+                    var runfiles = Runfiles.Create();
+                    path = runfiles.Rlocation($"sharp_boost_voronoi/boost_voronoi/libboost_voronoi{ext}");
+                }
                 NativeLibrary.TryLoad(path, assembly, DllImportSearchPath.System32, out libHandle);
             }
             return libHandle;

@@ -1,0 +1,26 @@
+STORAGE: NONE
+
+GROUP sharp_boost_voronoi_deps
+RESTRICTION: == net8.0
+NUGET
+  remote: https://api.nuget.org/v3/index.json
+    Microsoft.CodeCoverage (17.12)
+    Microsoft.NET.Test.Sdk (17.8)
+      Microsoft.CodeCoverage (>= 17.8)
+      Microsoft.TestPlatform.TestHost (>= 17.8)
+    Microsoft.NETCore.Platforms (7.0.4)
+    Microsoft.TestPlatform.ObjectModel (17.12)
+      System.Reflection.Metadata (>= 1.6)
+    Microsoft.TestPlatform.TestHost (17.12)
+      Microsoft.TestPlatform.ObjectModel (>= 17.12)
+      Newtonsoft.Json (>= 13.0.1)
+    NETStandard.Library (2.0.3)
+      Microsoft.NETCore.Platforms (>= 1.1)
+    Newtonsoft.Json (13.0.3)
+    NUnit (3.12)
+      NETStandard.Library (>= 2.0)
+    NUnit3TestAdapter (4.6)
+    Runfiles (0.14)
+    System.Collections.Immutable (9.0)
+    System.Reflection.Metadata (9.0)
+      System.Collections.Immutable (>= 9.0)

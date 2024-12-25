@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace VoronoiWrapperTests
+namespace SharpBoostVoronoi.VoronoiWrapperTests
 {
     [TestFixture]
     internal class VoronoiWrapperTests

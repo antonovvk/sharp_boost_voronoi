@@ -1,0 +1,11 @@
+load("@rules_dotnet//dotnet:defs.bzl", "csharp_library")
+
+csharp_library(
+    name = "VoronoiWrapper",
+    srcs = ["VoronoiWrapper.cs"],
+    data = ["//boost_voronoi"],
+    deps = ["@rules_dotnet//tools/runfiles"],
+    allow_unsafe_blocks = True,
+    target_frameworks = ["net8.0"],
+    visibility = ["//visibility:public"],
+)

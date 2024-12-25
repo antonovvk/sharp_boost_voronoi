@@ -1,7 +1,0 @@
-storage: none
-
-group sharp_boost_voronoi_deps
-    framework: net8.0
-    source https://api.nuget.org/v3/index.json
-
-    nuget NUnit 3.12.0

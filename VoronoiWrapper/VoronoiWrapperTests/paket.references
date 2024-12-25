@@ -1,0 +1,4 @@
+group sharp_boost_voronoi_deps
+    Microsoft.NET.Test.Sdk
+    NUnit
+    NUnit3TestAdapter

@@ -9,6 +9,7 @@
 
 *.stl
 
+.paket
 bazel-*
 external
 

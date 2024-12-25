@@ -1,0 +1,12 @@
+load("@rules_dotnet//dotnet:defs.bzl", "csharp_nunit_test")
+
+csharp_nunit_test(
+    name = "VoronoiWrapperTests",
+    srcs = ["VoronoiWrapperTests.cs"],
+    deps = [
+        "//VoronoiWrapper",
+        "@paket.sharp_boost_voronoi_deps//nunit",
+    ],
+    target_frameworks = ["net8.0"],
+    visibility = ["//visibility:public"],
+)
