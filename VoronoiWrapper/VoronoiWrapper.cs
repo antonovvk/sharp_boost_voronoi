@@ -178,7 +178,7 @@ public unsafe class VoronoiWrapper : IDisposable {
                     RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? ".dylib" :
                     ".so";
 
-                var path = Path.Combine(System.IO.Path.GetDirectoryName(assembly.Location), $"libboost_voronoi{ext}");
+                var path = $"libboost_voronoi{ext}";
                 if (Environment.GetEnvironmentVariable("RUNFILES_DIR") is not null)
                 {
                     var runfiles = Runfiles.Create();

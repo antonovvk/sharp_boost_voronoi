@@ -1,6 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <PackageId>SharpBoostVoronoi.VoronoiWrapper</PackageId>
+    <Version>0.0.2</Version>
+    <Authors>Vladimir Antonov</Authors>
+    <PackageTags>boost;algorithm;voronoi</PackageTags>
+    <Description>
+      C# bingings for Boost Voronoi algorithms
+      GitHub: https://github.com/antonovvk/sharp_boost_voronoi
+    </Description>
+  </PropertyGroup>
+  <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -21,6 +31,12 @@
       </Content>
       <Content Include="..\lib\libboost_voronoi.dylib" Condition=" '$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' ">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+  </ItemGroup>
+  <ItemGroup>
+      <Content Include="..\lib\libboost_voronoi.so">
+          <Pack>true</Pack>
+          <PackagePath>runtimes\linux-x64\$(TargetFramework)\</PackagePath>
       </Content>
   </ItemGroup>
   <Import Project=".paket\Paket.Restore.targets" />
