@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <PackageId>SharpBoostVoronoi.VoronoiWrapper</PackageId>
-    <Version>0.0.2</Version>
+    <Version>0.0.3</Version>
     <Authors>Vladimir Antonov</Authors>
     <PackageTags>boost;algorithm;voronoi</PackageTags>
     <Description>
@@ -23,21 +23,21 @@
     <Compile Include="VoronoiWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
-      <Content Include="..\lib\libboost_voronoi.dll" Condition=" '$(OS)' == 'Windows_NT' ">
+      <Content Include="runtimes/windows-x64/native/libboost_voronoi.dll" Condition=" '$(OS)' == 'Windows_NT' ">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-      <Content Include="..\lib\libboost_voronoi.so" Condition=" '$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' ">
+      <Content Include="runtimes/linux-x64/native/libboost_voronoi.so" Condition=" '$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' ">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-      <Content Include="..\lib\libboost_voronoi.dylib" Condition=" '$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' ">
+      <Content Include="runtimes/osx-x64/native/libboost_voronoi.dylib" Condition=" '$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' ">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
   </ItemGroup>
   <ItemGroup>
-      <Content Include="..\lib\libboost_voronoi.so">
+      <Content Include="runtimes/linux-x64/native/libboost_voronoi.so" Link="runtimes/linux-x64/native/libboost_voronoi.so">
           <Pack>true</Pack>
-          <PackagePath>runtimes\linux-x64\$(TargetFramework)\</PackagePath>
+          <PackagePath>runtimes/linux-x64/native/</PackagePath>
       </Content>
   </ItemGroup>
-  <Import Project=".paket\Paket.Restore.targets" />
+  <Import Project=".paket/Paket.Restore.targets" />
 </Project>
